@@ -29,3 +29,34 @@ The current `.cgl` file is a versioned JSON envelope containing all `os:` and `e
 This is an early prototype, not a production-grade examination system. OMR recognition depends on clean, correctly framed photos and the printed sheet remaining at 100% scale. Roll numbers use six digit columns; check the roll value and correct it in the Grade Checker when any digit is uncertain. Review every detected answer before relying on scores. Name OCR is best-effort and may misread handwriting, low-resolution images or unusual scripts. The OCR tool currently reads a user-selected name image; it does not yet automatically extract the name from the OMR sheet during scanning.
 
 Accounts are browser-local, not server-authenticated. Clearing site data can erase accounts and exam data. Export full OS backups regularly. Keep the `.cgl` file private because it contains local account records and all included exam data.
+
+
+## Installable Web App (PWA)
+
+ExamKit includes a web app manifest, app icon, and service worker. On a supported browser, open the GitHub Pages site over HTTPS or the local host and choose **Install Web App** from the dashboard (or use the browser's Install app / Add to Home Screen menu). The shell can be cached for offline opening. OCR still needs its first Tesseract.js download unless that library has already been cached by the browser.
+
+## Run ExamKit on your own computer
+
+The desktop installers are available from the dashboard and in `installers/`:
+
+- Debian / Linux: download `installers/install-debian.sh`, then run `bash install-debian.sh`. It installs the app under `~/.local/share/cgl-examkit-app`, creates the `examkit` launcher in `~/.local/bin`, and installs the Python dependencies in a virtual environment.
+- Windows: download `installers/install-windows.ps1` and run it in PowerShell. It creates a Desktop shortcut named **CGL+ ExamKit OS**.
+- macOS: download `installers/install-macos.command` and open it. It creates `~/Applications/ExamKit.command`.
+
+Python 3.9+ is required. The installers download the current application files from this repository and install the small `zeroconf` dependency for mDNS discovery. To start the local service, run `examkit` on Debian, use the Windows Desktop shortcut, or open `~/Applications/ExamKit.command` on macOS.
+
+The local host serves ExamKit on port **8765**. It prints both a localhost URL and a network URL such as `http://<computer-hostname>.local:8765`. The exact hostname depends on the installed computer's hostname. mDNS support and firewall rules vary by operating system and network; if the .local address does not resolve, use the computer's LAN IP address with port 8765. Keep the computer awake and the ExamKit server running while other devices use it. Devices must be on the same trusted local network.
+
+## Local PC database
+
+When opened from the installed local host, ExamKit synchronizes its `os:` and `examkit:` browser data to a local SQLite database. The database is stored outside the browser profile:
+
+- Debian / Linux: `~/.local/share/cgl-examkit/examkit.sqlite3`
+- Windows: `%LOCALAPPDATA%\\CGL\\ExamKit\\examkit.sqlite3`
+- macOS: `~/Library/Application Support/CGL ExamKit/examkit.sqlite3`
+
+The browser's localStorage is used as the app's live cache; the SQLite database is the durable local-host copy. The full OS `.cgl` backup remains available as a portable backup/export. The local server listens on the LAN so other devices can reach the .local address. Use it only on a trusted private network; the app's local account screen is not a replacement for network-level access controls or a hardened multi-user server.
+
+## Notes and limitations
+
+This is a local web application hosted by a small Python service, not a bootable operating system or a native compiled desktop application. The computer hosting it must remain powered on. The installers are scripts, not signed packages; review them before running. GitHub Pages remains a static web version and keeps data in that browser unless the app is opened through the installed local host.
