@@ -33,7 +33,7 @@ ExamKit user accounts remain application-level accounts stored in the workspace;
 
 ## Installable Web App (PWA)
 
-ExamKit includes a web app manifest, app icon, and service worker. On a supported browser, open the GitHub Pages site over HTTPS or the local host and choose **Install Web App** from the dashboard (or use the browser's Install app / Add to Home Screen menu). The shell can be cached for offline opening. OCR still needs its first Tesseract.js download unless that library has already been cached by the browser.
+ExamKit includes a web app manifest, app icon, and service worker. On a supported browser, open the GitHub Pages site over HTTPS or use `http://localhost:8765` on the host computer (HTTP `.local` links on other devices are not secure contexts for PWA installation) and choose **Install Web App** from the dashboard (or use the browser's Install app / Add to Home Screen menu). The shell can be cached for offline opening. OCR still needs its first Tesseract.js download unless that library has already been cached by the browser.
 
 ## Run ExamKit on your own computer
 
