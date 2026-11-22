@@ -4,12 +4,12 @@ if(window.__EXAMKIT_SERVER__?.enabled){
  const cfg=window.__EXAMKIT_SERVER__,nativeSet=Storage.prototype.setItem,nativeRemove=Storage.prototype.removeItem,nativeClear=Storage.prototype.clear;
  let syncTimer=null;
  const snapshot=()=>{const storage={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&/^(os:|examkit:)/.test(k))storage[k]=localStorage.getItem(k)}return storage};
- const flush=()=>fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json","X-ExamKit-Token":cfg.token},body:JSON.stringify({storage:snapshot()}),keepalive:true}).catch(()=>{});
+ const flush=(keepalive=false)=>fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json","X-ExamKit-Token":cfg.token},body:JSON.stringify({storage:snapshot()}),...(keepalive?{keepalive:true}:{})}).catch(()=>{});
  const schedule=()=>{clearTimeout(syncTimer);syncTimer=setTimeout(flush,350)};
  Storage.prototype.setItem=function(k,v){nativeSet.call(this,k,v);if(this===localStorage&&/^(os:|examkit:)/.test(String(k)))schedule()};
  Storage.prototype.removeItem=function(k){nativeRemove.call(this,k);if(this===localStorage&&/^(os:|examkit:)/.test(String(k)))schedule()};
  Storage.prototype.clear=function(){nativeClear.call(this);if(this===localStorage)schedule()};
- window.addEventListener("pagehide",flush);
+ window.addEventListener("pagehide",()=>flush(true));
  if(!Object.keys(window.__EXAMKIT_SERVER_STATE__||{}).length&&Object.keys(snapshot()).length)schedule();
 }
 const L='ABCDE',$=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
