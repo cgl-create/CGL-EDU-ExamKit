@@ -153,10 +153,12 @@ def announce():
 if __name__ == "__main__":
     server = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
     zc, service = announce()
+    ip = local_ip()
     print("")
     print("CGL+ ExamKit OS is running.")
     print(f"  This computer: http://localhost:{PORT}")
     print(f"  Local network: http://{HOSTNAME}.local:{PORT}")
+    print(f"  LAN fallback:  http://{ip}:{PORT}")
     print(f"  Data folder:   {DATA_ROOT}")
     print("  Keep this terminal open while using ExamKit. Press Ctrl+C to stop.")
     print("")
