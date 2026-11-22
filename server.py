@@ -77,6 +77,11 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(APP_DIR), **kwargs)
 
+    def guess_type(self, path):
+        if path.endswith(".webmanifest"):
+            return "application/manifest+json"
+        return super().guess_type(path)
+
     def log_message(self, fmt, *args):
         print("[ExamKit] " + (fmt % args))
 
