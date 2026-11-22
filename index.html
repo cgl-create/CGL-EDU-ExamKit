@@ -159,7 +159,6 @@ if(window.__EXAMKIT_SERVER__?.enabled){
  window.addEventListener("pagehide",flush);
  if(!Object.keys(window.__EXAMKIT_SERVER_STATE__||{}).length&&Object.keys(snapshot()).length)schedule();
 }
-<script>
 const L='ABCDE',$=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function notify(message){let n=document.getElementById('examkit-toast');if(!n){n=document.createElement('div');n.id='examkit-toast';n.style.cssText='position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:99;background:#282a30;color:#fff;border:1px solid #555;padding:11px 16px;border-radius:12px;box-shadow:0 8px 28px #0008;max-width:90vw';document.body.append(n)}n.textContent=message;n.hidden=false;clearTimeout(n._timer);n._timer=setTimeout(()=>n.hidden=true,3200)}
 
