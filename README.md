@@ -41,7 +41,7 @@ The desktop installers are available from the dashboard and in `installers/`:
 
 - Debian / Linux: download `installers/install-debian.sh`, then run `bash install-debian.sh`. It installs the app under `~/.local/share/cgl-examkit-app`, creates the `examkit` launcher in `~/.local/bin`, and installs the Python dependencies in a virtual environment.
 - Windows: download `installers/install-windows.ps1` and run it in PowerShell. It creates a Desktop shortcut named **CGL+ ExamKit OS**.
-- macOS: download `installers/install-macos.command` and open it. It creates `~/Applications/ExamKit.command`.
+- macOS: download `installers/install-macos.command` and run `bash install-macos.command` in Terminal. It creates `~/Applications/ExamKit.command`.
 
 Python 3.9+ is required. On Debian, install the Python venv package if your distribution does not include it (for example, `sudo apt install python3-venv`). On Windows, run PowerShell as Administrator if you want the installer to add the optional private-network firewall rule; if script execution is blocked, use `Set-ExecutionPolicy -Scope Process Bypass` for that PowerShell session. The installers download the current application bundle and server files from this repository and install the small `zeroconf` dependency for mDNS discovery. To start the local service, run `examkit` on Debian, use the Windows Desktop shortcut, or open `~/Applications/ExamKit.command` on macOS.
 
