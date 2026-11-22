@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $App = Join-Path $env:LOCALAPPDATA "CGL\ExamKit\App"
 New-Item -ItemType Directory -Force -Path $App | Out-Null
 $Base = "https://raw.githubusercontent.com/cgl-create/CGL-EDU-ExamKit/main"
@@ -30,6 +31,7 @@ $Shortcut = $Shell.CreateShortcut($ShortcutPath)
 $Shortcut.TargetPath = $Launcher
 $Shortcut.WorkingDirectory = $App
 $Shortcut.Save()
+try { New-NetFirewallRule -DisplayName "CGL+ ExamKit OS (TCP 8765)" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8765 -Profile Private -ErrorAction Stop | Out-Null } catch { Write-Warning "Could not add the private-network firewall rule. Run PowerShell as Administrator or allow Python through Windows Firewall when prompted." }
 Write-Host ""
 Write-Host "Installed. Start CGL+ ExamKit OS from your Desktop shortcut."
 Write-Host "Open http://examkit.local:8765 (or the hostname printed by the server)."
