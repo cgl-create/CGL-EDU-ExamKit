@@ -3,7 +3,7 @@ set -e
 APP="$HOME/Library/Application Support/CGL ExamKit/App"
 mkdir -p "$APP"
 BASE="https://raw.githubusercontent.com/cgl-create/CGL-EDU-ExamKit/main"
-for f in index.html server.py requirements.txt manifest.webmanifest sw.js icon.svg; do
+for f in index.html app.js server.py requirements.txt manifest.webmanifest sw.js icon.svg; do
   echo "Downloading $f..."
   curl -fL "$BASE/$f" -o "$APP/$f"
 done
