@@ -1,0 +1,18 @@
+{
+  "name": "CGL+ ExamKit OS",
+  "short_name": "ExamKit",
+  "description": "Local examination paper and grading workspace",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b111b",
+  "theme_color": "#f2c94c",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
