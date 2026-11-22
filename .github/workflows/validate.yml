@@ -20,7 +20,7 @@ jobs:
           node - <<'NODE'
           const fs = require('fs');
           const html = fs.readFileSync('index.html', 'utf8');
-          const scripts = [...html.matchAll(/<script>([\\s\\S]*?)<\\/script>/g)];
+          const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
           if (!scripts.length) throw new Error('No application script found');
           if (!html.includes('manifest.webmanifest')) throw new Error('PWA manifest link missing');
           if (html.includes('Save to My Papers')) throw new Error('Floating save control should not exist');
