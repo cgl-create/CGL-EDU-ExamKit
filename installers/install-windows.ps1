@@ -8,12 +8,12 @@ foreach ($File in $Files) {
   Invoke-WebRequest -Uri "$Base/$File" -OutFile (Join-Path $App $File)
 }
 $Python = Get-Command py -ErrorAction SilentlyContinue
-if ($Python) { $PyCmd = "py" } else {
+if ($Python) { $PyCmd = "py"; $PyArgs = @("-3") } else {
   $Python = Get-Command python -ErrorAction SilentlyContinue
   if (-not $Python) { throw "Python 3 is required. Install it from https://www.python.org/downloads/windows/ and rerun this installer." }
-  $PyCmd = "python"
+  $PyCmd = "python"; $PyArgs = @()
 }
-& $PyCmd -3 -m venv (Join-Path $App ".venv")
+& $PyCmd @PyArgs -m venv (Join-Path $App ".venv")
 $VenvPython = Join-Path $App ".venv\Scripts\python.exe"
 & $VenvPython -m pip install --upgrade pip
 & $VenvPython -m pip install -r (Join-Path $App "requirements.txt")
