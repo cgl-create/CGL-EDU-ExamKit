@@ -23,10 +23,12 @@ jobs:
           const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
           if (!scripts.length) throw new Error('No application script found');
           if (!html.includes('manifest.webmanifest')) throw new Error('PWA manifest link missing');
+          if (!html.includes('app.js')) throw new Error('Application bundle missing');
           if (html.includes('Save to My Papers')) throw new Error('Floating save control should not exist');
           scripts.forEach((s, i) => fs.writeFileSync('/tmp/examkit-' + i + '.js', s[1]));
           NODE
           node --check /tmp/examkit-0.js
+          node --check app.js
       - name: Validate local host and installers
         run: |
           python -m py_compile server.py
