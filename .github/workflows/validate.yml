@@ -12,13 +12,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Extract and syntax-check application script
         run: |
           node - <<'NODE'
           const fs = require('fs');
           const html = fs.readFileSync('index.html', 'utf8');
-          const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+          const scripts = [...html.matchAll(/<script>([\\s\\S]*?)<\\/script>/g)];
           if (!scripts.length) throw new Error('No application script found');
+          if (!html.includes('manifest.webmanifest')) throw new Error('PWA manifest link missing');
+          if (html.includes('Save to My Papers')) throw new Error('Floating save control should not exist');
           scripts.forEach((s, i) => fs.writeFileSync('/tmp/examkit-' + i + '.js', s[1]));
           NODE
           node --check /tmp/examkit-0.js
+      - name: Validate local host and installers
+        run: |
+          python -m py_compile server.py
+          python -m json.tool manifest.webmanifest > /dev/null
+          bash -n installers/install-debian.sh
+          bash -n installers/install-macos.command
