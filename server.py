@@ -10,7 +10,7 @@ APP_DIR = Path(__file__).resolve().parent
 PORT = int(os.environ.get("EXAMKIT_PORT", "8765"))
 HOSTNAME = re.sub(r"[^a-z0-9-]", "-", os.environ.get("EXAMKIT_HOSTNAME") or socket.gethostname().split(".")[0].lower()).strip("-") or "examkit"
 DATA_ROOT = Path(os.environ.get("EXAMKIT_DATA_DIR") or (
-    Path(os.environ["APPDATA"]) / "CGL" / "ExamKit" if sys.platform == "win32" else
+    Path(os.environ.get("LOCALAPPDATA") or os.environ.get("APPDATA") or Path.home()) / "CGL" / "ExamKit" if sys.platform == "win32" else
     Path.home() / "Library" / "Application Support" / "CGL ExamKit" if sys.platform == "darwin" else
     Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")) / "cgl-examkit"
 ))
@@ -166,7 +166,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\n[ExamKit] Shutting down...")
     finally:
-        server.shutdown()
         server.server_close()
         if zc and service:
             zc.unregister_service(service)
