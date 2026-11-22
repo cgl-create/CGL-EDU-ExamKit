@@ -100,10 +100,7 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json(200, {"storage": snapshot()})
         if path in ("/", "/index.html"):
             html = (APP_DIR / "index.html").read_text(encoding="utf-8")
-            state = json.dumps(snapshot(), ensure_ascii=False).replace("</", "<\\/")
-            config = json.dumps({"enabled": True, "token": TOKEN}, separators=(",", ":"))
-            bootstrap = f"window.__EXAMKIT_SERVER__={config};window.__EXAMKIT_SERVER_STATE__={state};for(const [k,v] of Object.entries(window.__EXAMKIT_SERVER_STATE__))localStorage.setItem(k,v);"
-            html = html.replace("/*EXAMKIT_SERVER_BOOTSTRAP*/", bootstrap)
+            html = html.replace("/*EXAMKIT_SERVER_BOOTSTRAP*/", "window.__EXAMKIT_SERVER_REQUIRED__=true;")
             raw = html.encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -160,6 +157,8 @@ if __name__ == "__main__":
     print(f"  Local network: http://{HOSTNAME}.local:{PORT}")
     print(f"  LAN fallback:  http://{ip}:{PORT}")
     print(f"  Data folder:   {DATA_ROOT}")
+    print(f"  Host access key: {TOKEN}")
+    print("  Enter this key in the browser on each device that connects.")
     print("  Keep this terminal open while using ExamKit. Press Ctrl+C to stop.")
     print("")
     try:
