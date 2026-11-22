@@ -12,12 +12,12 @@ if [ -z "$PYTHON" ]; then echo "Install Python 3 from https://www.python.org/dow
 "$PYTHON" -m venv "$APP/.venv"
 "$APP/.venv/bin/python" -m pip install --upgrade pip
 "$APP/.venv/bin/pip" install -r "$APP/requirements.txt"
+mkdir -p "$HOME/Applications"
 cat > "$HOME/Applications/ExamKit.command" <<EOF
 #!/bin/bash
 cd "$APP"
 "$APP/.venv/bin/python" server.py
 EOF
-mkdir -p "$HOME/Applications"
 chmod +x "$HOME/Applications/ExamKit.command"
 echo "Installed. Start ExamKit from ~/Applications/ExamKit.command"
 echo "Open http://examkit.local:8765 (or the hostname printed by the server)."
