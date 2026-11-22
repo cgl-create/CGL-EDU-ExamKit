@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 $App = Join-Path $env:LOCALAPPDATA "CGL\ExamKit\App"
 New-Item -ItemType Directory -Force -Path $App | Out-Null
 $Base = "https://raw.githubusercontent.com/cgl-create/CGL-EDU-ExamKit/main"
-$Files = @("index.html","server.py","requirements.txt","manifest.webmanifest","sw.js","icon.svg")
+$Files = @("index.html","app.js","server.py","requirements.txt","manifest.webmanifest","sw.js","icon.svg")
 foreach ($File in $Files) {
   Write-Host "Downloading $File..."
   Invoke-WebRequest -Uri "$Base/$File" -OutFile (Join-Path $App $File)
