@@ -248,7 +248,7 @@ $('#s1n').onclick=()=>step(2);
 $('#s2b').onclick=()=>U.get().length?lock():step(1);
 $('#s2n').onclick=async()=>{const n=$('#un').value.trim(),p=$('#up').value,e=$('#se');if(!n)return e.textContent='Enter your name.';if(p.length<6)return e.textContent='Use at least 6 characters.';if(p!==$('#up2').value)return e.textContent='Passwords don’t match.';const us=U.get();if(us.some(x=>x.name.toLowerCase()===n.toLowerCase()))return e.textContent='That name is already used.';e.textContent='';const salt=hx(crypto.getRandomValues(new Uint8Array(12))),id='u'+Date.now().toString(36);us.push({id,name:n,school:$('#us').value.trim(),salt,hash:await PH(p,salt)});U.set(us);newId=id;step(3)};
 $('#s3n').onclick=()=>enter(newId);
-$('#out').onclick=out;$('#pout').onclick=out;$('#home').onclick=()=>go('desk');$('#pback').onclick=()=>go('desk');
+$('#pout').onclick=out;$('#home').onclick=()=>go('desk');$('#pback').onclick=()=>go('desk');
 $('#t-prefs').onclick=()=>{const u=U.get().find(x=>x.id===UID);$('#pu').innerHTML=av(u)+`<div><b>${esc(u.name)}</b><div class="sub" style="margin:0">${esc(u.school||'No school set')}</div></div>`;go('prefs')};
 document.querySelectorAll('#desk [data-app]').forEach(t=>t.onclick=()=>openApp(t.dataset.app));document.querySelectorAll('[data-dash="home"]').forEach(t=>t.onclick=()=>{go('desk');document.querySelectorAll('.nas-nav button').forEach(b=>b.classList.toggle('active',b===t))});function openApp(name){go('app');const b=document.querySelector('nav button[data-t="'+name+'"]');if(b)b.click();document.querySelectorAll('.nas-nav button').forEach(x=>x.classList.toggle('active',x.dataset.app===name));moveInd()}
 $('#newpaper').onclick=newPaper;
