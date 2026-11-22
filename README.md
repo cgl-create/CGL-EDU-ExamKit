@@ -20,7 +20,7 @@ Open `index.html` in a modern browser, or publish the repository with GitHub Pag
 
 ## Data storage and backups
 
-Exam data is stored locally in the browser, separately for each local ExamKit account. It is not uploaded to a CGL+ server. Use **Full OS backup .cgl** to download the complete local OS state to the computer. Use **Restore .cgl** to replace the current browser's ExamKit OS data and accounts with the backup. After restore, sign in using an account contained in that backup. Backup and restore require a secure browser context with Web Crypto support (for example, GitHub Pages over HTTPS). Keep backups somewhere safe before clearing browser data.
+On the GitHub Pages web version, exam data is stored in browser localStorage, separately for each local ExamKit account. On an installed local-host setup, browser changes are synchronized to a SQLite database on that same host PC. No CGL+ cloud server is involved. Use **Full OS backup .cgl** to download the complete local OS state to the computer. Use **Restore .cgl** to replace the current browser's ExamKit OS data and accounts with the backup. The Save current paper control is available only inside My Papers, not as a floating button across the application. After restore, sign in using an account contained in that backup. Backup and restore require a secure browser context with Web Crypto support (for example, GitHub Pages over HTTPS). Keep backups somewhere safe before clearing browser data.
 
 The current `.cgl` file is a versioned JSON envelope containing all `os:` and `examkit:` browser-storage entries (including the local account database and all users' data), plus a SHA-256 integrity digest. It is not a ZIP archive. Restoring replaces the ExamKit OS data namespaces in the current browser; it does not restore browser extensions, browser settings, or data outside ExamKit.
 
@@ -28,7 +28,7 @@ The current `.cgl` file is a versioned JSON envelope containing all `os:` and `e
 
 This is an early prototype, not a production-grade examination system. OMR recognition depends on clean, correctly framed photos and the printed sheet remaining at 100% scale. Roll numbers use six digit columns; check the roll value and correct it in the Grade Checker when any digit is uncertain. Review every detected answer before relying on scores. Name OCR is best-effort and may misread handwriting, low-resolution images or unusual scripts. The OCR tool currently reads a user-selected name image; it does not yet automatically extract the name from the OMR sheet during scanning.
 
-Accounts are browser-local, not server-authenticated. Clearing site data can erase accounts and exam data. Export full OS backups regularly. Keep the `.cgl` file private because it contains local account records and all included exam data.
+Accounts are browser-local, not server-authenticated. On the static web version, clearing site data can erase accounts and exam data. On the installed version, the host SQLite database remains outside the browser profile. Export full OS backups regularly. Keep the `.cgl` file private because it contains local account records and all included exam data.
 
 
 ## Installable Web App (PWA)
@@ -43,7 +43,7 @@ The desktop installers are available from the dashboard and in `installers/`:
 - Windows: download `installers/install-windows.ps1` and run it in PowerShell. It creates a Desktop shortcut named **CGL+ ExamKit OS**.
 - macOS: download `installers/install-macos.command` and open it. It creates `~/Applications/ExamKit.command`.
 
-Python 3.9+ is required. The installers download the current application files from this repository and install the small `zeroconf` dependency for mDNS discovery. To start the local service, run `examkit` on Debian, use the Windows Desktop shortcut, or open `~/Applications/ExamKit.command` on macOS.
+Python 3.9+ is required. On Debian, install the Python venv package if your distribution does not include it (for example, `sudo apt install python3-venv`). On Windows, run PowerShell as Administrator if you want the installer to add the optional private-network firewall rule; if script execution is blocked, use `Set-ExecutionPolicy -Scope Process Bypass` for that PowerShell session. The installers download the current application files from this repository and install the small `zeroconf` dependency for mDNS discovery. To start the local service, run `examkit` on Debian, use the Windows Desktop shortcut, or open `~/Applications/ExamKit.command` on macOS.
 
 The local host serves ExamKit on port **8765**. It prints both a localhost URL and a network URL such as `http://<computer-hostname>.local:8765`. The exact hostname depends on the installed computer's hostname. mDNS support and firewall rules vary by operating system and network; if the .local address does not resolve, use the computer's LAN IP address with port 8765. Keep the computer awake and the ExamKit server running while other devices use it. Devices must be on the same trusted local network.
 
