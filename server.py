@@ -34,8 +34,11 @@ def db():
     return conn
 
 def snapshot():
-    with db() as conn:
+    conn = db()
+    try:
         return dict(conn.execute("SELECT key,value FROM kv"))
+    finally:
+        conn.close()
 
 def replace_snapshot(values):
     if not isinstance(values, dict) or len(values) > 5000:
@@ -51,10 +54,14 @@ def replace_snapshot(values):
         if total > 32 * 1024 * 1024:
             raise ValueError("Storage snapshot exceeds 32 MB")
         clean[key] = value
-    with db() as conn:
+    conn = db()
+    try:
         conn.execute("BEGIN IMMEDIATE")
         conn.execute("DELETE FROM kv")
         conn.executemany("INSERT INTO kv(key,value) VALUES(?,?)", clean.items())
+        conn.commit()
+    finally:
+        conn.close()
 
 def local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
