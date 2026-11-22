@@ -58,6 +58,37 @@ body:not(.app) :is(main,nav,header,#home){display:none}body:not(.app)::after{dis
 @page{size:A4;margin:0}
 body::after{content:"";position:fixed;inset:auto 0 0 0;height:calc(120px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg));pointer-events:none;z-index:4}
 @media print{body{background:#fff}body::after,header,nav,.no-print{display:none!important}main{padding:0;max-width:none}.sheet{box-shadow:none;margin:0;border-radius:0;width:210mm;max-width:none;padding:14mm}.sheet.o{padding:0;height:297mm}}
+
+/* TrueNAS-inspired dashboard */
+.scr#desk.on{display:block;padding:0;align-content:stretch}
+.nas-shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);background:#0b111b;color:#e8edf5}
+.nas-side{position:sticky;top:0;height:100vh;padding:22px 14px;background:#101a28;border-right:1px solid #263448;display:flex;flex-direction:column;gap:18px}
+.nas-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 16px;border-bottom:1px solid #263448}
+.nas-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#f2c94c;color:#111;font-weight:900}
+.nas-brand strong{display:block}.nas-brand small{color:#93a4b9}
+.nas-label{padding:0 10px;color:#8293a9;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+.nas-nav{display:grid;gap:5px}.nas-nav button{width:100%;display:flex;align-items:center;gap:12px;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:#aebbd0;text-align:left;font:inherit;font-size:.9rem;cursor:pointer}
+.nas-nav button:hover,.nas-nav button.active{background:#1d2c40;color:#f2c94c}.nas-nav button .ni{width:22px;text-align:center;font-size:1.1rem}
+.nas-side-foot{margin-top:auto;padding:12px;border:1px solid #263448;border-radius:12px;color:#93a4b9;font-size:.78rem}
+.nas-main{min-width:0;padding:28px clamp(18px,3vw,42px) 48px;max-width:1600px;width:100%;margin:auto}
+.nas-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.nas-top h1{font-size:1.65rem;margin:0}.nas-top p{color:#93a4b9;margin:4px 0 0;font-size:.9rem}
+.nas-user{display:flex;align-items:center;gap:10px;color:#c5d0df}.nas-user .av{width:38px;height:38px;font-size:1rem}
+.nas-section{margin:22px 0}.nas-section h2{font-size:1.02rem;margin:0 0 12px;color:#dce5f1}
+.nas-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.nas-stat{padding:18px;border-radius:14px;background:#121f30;border:1px solid #26384e;min-width:0}
+.nas-stat span{display:block;color:#91a3b9;font-size:.8rem}.nas-stat b{display:block;font-size:1.8rem;margin-top:8px;color:#f3f6fb;font-weight:650}
+.nas-columns{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:16px}
+.nas-panel{padding:18px;border-radius:14px;background:#121f30;border:1px solid #26384e;min-width:0}
+.nas-panel h3{font-size:.95rem;margin:0 0 14px}.nas-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #263448}.nas-row:last-child{border:0}
+.nas-row small{display:block;color:#91a3b9;margin-top:3px}.nas-row b{font-size:.88rem}
+.nas-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nas-quick button{border:1px solid #2b3d54;background:#19283a;color:#e8edf5;border-radius:11px;padding:14px 10px;text-align:left;font:inherit;cursor:pointer}
+.nas-quick button:hover{border-color:#f2c94c}.nas-quick span{display:block;font-size:1.3rem;margin-bottom:8px}
+.nas-main .btn.g{background:#1a293b;border-color:#34475f}
+@media(max-width:900px){.nas-shell{grid-template-columns:1fr}.nas-side{position:relative;height:auto;padding:12px 14px;gap:10px}.nas-brand{padding:2px 6px 10px}.nas-side .nas-label,.nas-side-foot{display:none}.nas-nav{display:flex;overflow-x:auto}.nas-nav button{white-space:nowrap;width:auto;flex:none}.nas-main{padding:20px 16px 38px}.nas-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.nas-columns{grid-template-columns:1fr}.nas-quick{grid-template-columns:repeat(2,minmax(0,1fr))}.nas-top{align-items:flex-start;flex-direction:column}.nas-stats{gap:9px}.nas-stat{padding:14px}.nas-stat b{font-size:1.5rem}}
+@media print{.nas-shell{display:none!important}}
 </style></head>
 <body>
 <div class="blobs"><i></i><i></i><i></i></div>
@@ -68,7 +99,21 @@ body::after{content:"";position:fixed;inset:auto 0 0 0;height:calc(120px + env(s
 <div class="st" id="s2"><h2>Create your account</h2><label>Your name<input id="un" autocomplete="name"></label><label>School name<input id="us"></label><label>Password (6+ characters)<input id="up" type="password" autocomplete="new-password"></label><label>Confirm password<input id="up2" type="password" autocomplete="new-password"></label><p class="err" id="se"></p><div class="bar"><button class="btn g" id="s2b">Back</button><button class="btn" id="s2n">Create account</button></div></div>
 <div class="st" id="s3" style="text-align:center"><div class="orb"></div><h2>You’re all set</h2><p class="sub">Your account is saved in this browser.</p><button class="btn" id="s3n">Continue</button></div></div></section>
 <section class="scr" id="lock"><div class="lk"><div class="clk" id="lc"></div><div class="dt" id="ld"></div><div class="gc"><div class="ul" id="ulist"></div><label>Password<input id="lp" type="password" autocomplete="current-password"></label><p class="err" id="le"></p><div class="bar"><button class="btn g" id="addu">Add user</button><button class="btn" id="sin">Sign in</button></div></div></div></section>
-<section class="scr" id="desk"><div class="top"><span id="dc"></span><button class="btn g" id="out" style="min-height:38px">Sign out</button></div><div class="dw"><h1 id="hi"></h1><div class="tiles"><button class="tile" data-app="papers"><span class="ic">🗂️</span>My Papers</button><button class="tile" data-app="setup"><span class="ic">⚙️</span>Exam setup</button><button class="tile" data-app="qs"><span class="ic">✏️</span>Questions</button><button class="tile" data-app="paper"><span class="ic">📄</span>Paper</button><button class="tile" data-app="omr"><span class="ic">🔘</span>OMR sheet</button><button class="tile" data-app="key"><span class="ic">🔑</span>Answer key</button><button class="tile" data-app="grade"><span class="ic">📷</span>Scan &amp; grade</button><button class="tile" id="t-prefs"><span class="ic">👤</span>Account</button></div></div></section>
+<section class="scr" id="desk"><div class="nas-shell">
+<aside class="nas-side"><div class="nas-brand"><div class="nas-mark">EK</div><div><strong>ExamKit OS</strong><small>Education workspace</small></div></div>
+<div class="nas-label">Workspace</div><div class="nas-nav">
+<button class="active" data-dash="home"><span class="ni">▦</span>Dashboard</button>
+<button data-app="papers"><span class="ni">▤</span>My Papers</button><button data-app="setup"><span class="ni">⚙</span>Exam setup</button>
+<button data-app="qs"><span class="ni">✎</span>Question editor</button><button data-app="paper"><span class="ni">▧</span>Question paper</button>
+<button data-app="omr"><span class="ni">◉</span>OMR sheets</button><button data-app="key"><span class="ni">☷</span>Answer key</button><button data-app="grade"><span class="ni">▥</span>Grade checker</button></div>
+<div class="nas-label">System</div><div class="nas-nav"><button id="t-prefs"><span class="ni">♙</span>Accounts &amp; settings</button></div>
+<div class="nas-side-foot">Local OS storage<br><span style="color:#f2c94c">●</span> This browser · Private workspace</div></aside>
+<div class="nas-main"><div class="nas-top"><div><h1 id="hi">Dashboard</h1><p id="dashdate">ExamKit OS · System overview</p></div><div class="nas-user" id="nasuser"></div></div>
+<div id="dashhome"><div class="nas-section"><h2>Workspace overview</h2><div class="nas-stats">
+<div class="nas-stat"><span>Saved papers</span><b id="kpi-papers">0</b></div><div class="nas-stat"><span>Questions in active paper</span><b id="kpi-questions">0</b></div><div class="nas-stat"><span>Graded students</span><b id="kpi-results">0</b></div><div class="nas-stat"><span>Average score</span><b id="kpi-average">—</b></div></div></div>
+<div class="nas-section nas-columns"><div class="nas-panel"><h3>Recent papers</h3><div id="dashpapers"></div></div><div class="nas-panel"><h3>System actions</h3><div class="nas-quick">
+<button data-app="setup"><span>⚙️</span>New exam setup</button><button data-app="papers"><span>🗂️</span>Open papers</button><button data-app="grade"><span>📊</span>Grade students</button><button id="dashbackup"><span>💾</span>Full OS backup</button><button id="dashrestore"><span>↩️</span>Restore OS</button><button id="dashaccount"><span>👤</span>Account settings</button></div></div></div>
+<div class="nas-section"><h2>Quick access</h2><div class="nas-quick"><button data-app="qs"><span>✏️</span>Edit questions</button><button data-app="paper"><span>📄</span>Preview paper</button><button data-app="omr"><span>🔘</span>OMR layout</button><button data-app="key"><span>🔑</span>Answer key</button></div></div></div></div></div></section>
 <section class="scr" id="prefs"><div class="gc"><div style="display:flex;gap:12px;align-items:center;margin-bottom:12px" id="pu"></div><div class="bar" style="flex-direction:column;align-items:stretch"><button class="btn" id="pback">Back</button><button class="btn g" id="pout">Sign out</button><button class="btn g" id="pdata">Reset my exam data</button><button class="btn g" id="pdel">Delete my account</button><button class="btn g" id="pfac">Factory reset OS</button></div><p class="sub" style="margin:0">Accounts and exams are stored only in this browser. Clearing site data erases them.</p></div></section>
 <header><h1>Exam<span>Kit</span></h1><p class="sub">Build the paper, OMR sheet and answer key, then scan student sheets to grade them.</p></header>
 <main>
@@ -124,7 +169,7 @@ function omr(){let s=`<svg class="omr" viewBox="0 0 595 842" xmlns="http://www.w
 CR.forEach(([x,y])=>s+=`<rect x="${x-10}" y="${y-10}" width="20" height="20"/>`);
 s+=`<text x="297" y="68" text-anchor="middle" font-size="15" font-weight="700">${esc(S.school)}</text><text x="297" y="86" text-anchor="middle" font-size="10">${esc(S.title)} · ${esc(S.subject)} · OMR Answer Sheet</text>`;
 s+=`<text x="70" y="118" font-size="10">Name:</text><line x1="105" y1="118" x2="400" y2="118" stroke="#000"/><text x="70" y="142" font-size="10">Class / Date:</text><line x1="130" y1="142" x2="400" y2="142" stroke="#000"/><text x="70" y="180" font-size="9" font-weight="700">ROLL NO.</text>`;
-for(let d=0;d<6;d++)for(let v=0;v<10;v++){const[x,y]=rp(d,v);s+=`<circle cx="${x}" cy="${y}" r="6" fill="none" stroke="#000"/>`;if(!d)s+=`<text x="74" y="${y+3}" font-size="8" text-anchor="end">${v}</text>`}
+for(let d=0;d<6;d++){const[x]=rp(d,0);s+=`<text x="${x}" y="190" font-size="7" text-anchor="middle">D${d+1}</text>`;for(let v=0;v<10;v++){const[bx,by]=rp(d,v);s+=`<circle cx="${bx}" cy="${by}" r="6" fill="none" stroke="#000"/>`;s+=`<text x="${bx-9}" y="${by+3}" font-size="7" text-anchor="end">${v}</text>`}}
 ['Use a black or blue pen.','Fill the bubble completely.','Mark only one answer per question.','Do not fold, stain or write on the','black squares in the corners.'].forEach((t,i)=>s+=`<text x="300" y="${200+i*15}" font-size="9">${i<3?i+1+'. ':'    '}${t}</text>`);
 const cols=Math.ceil(S.nq/20);s+=`<text x="45" y="358" font-size="9" font-weight="700">ANSWERS</text>`;
 for(let c=0;c<cols;c++)for(let j=0;j<S.nopt;j++)s+=`<text x="${qp(c*20,j)[0]}" y="372" font-size="7" text-anchor="middle">${L[j]}</text>`;
@@ -158,9 +203,9 @@ async function scan(file){
  const A=[];CR.forEach(([x,y],i)=>{const[u,v]=pt[i];A.push([x,y,1,0,0,0,-u*x,-u*y,u],[0,0,0,x,y,1,-v*x,-v*y,v])});
  for(let c=0;c<8;c++){let m=c;for(let r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[m][c]))m=r;[A[c],A[m]]=[A[m],A[c]];for(let r=0;r<8;r++)if(r!==c){const f=A[r][c]/A[c][c];for(let k=c;k<9;k++)A[r][k]-=f*A[c][k]}}
  const hm=A.map((r,i)=>r[8]/r[i]),mp=(x,y)=>{const w=hm[6]*x+hm[7]*y+1;return[(hm[0]*x+hm[1]*y+hm[2])/w,(hm[3]*x+hm[4]*y+hm[5])/w]};
- const sc=Math.hypot(pt[1][0]-pt[0][0],pt[1][1]-pt[0][1])/515,rad=Math.max(2,6*sc*.55);
+ const sc=Math.hypot(pt[1][0]-pt[0][0],pt[1][1]-pt[0][1])/515,rad=Math.max(2.5,6*sc*.78);
  const fill=(x,y)=>{const[u,v]=mp(x,y);let d=0,n=0;for(let j=Math.floor(v-rad);j<=v+rad;j++)for(let i=Math.floor(u-rad);i<=u+rad;i++){if((i-u)**2+(j-v)**2>rad*rad||i<0||j<0||i>=W||j>=H)continue;n++;if(g[j*W+i]<T)d++}return n?d/n:0};
- const pick=f=>{const m=Math.max(...f);if(m<.35)return -1;const s=f.map((v,i)=>v>.35&&v>m*.6?i:-1).filter(i=>i>=0);return s.length>1?-2:s[0]};
+ const pick=f=>{const ranked=f.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v),top=ranked[0],next=ranked[1];if(!top||top.v<.30)return -1;if(next&&next.v>=Math.max(.30,top.v*.78))return -2;return top.i};
  const roll=[...Array(6)].map((_,d)=>{const k=pick(Array.from({length:10},(_,v)=>fill(...rp(d,v))));return k>=0?k:'?'}).join('');
  const ans=Array.from({length:S.nq},(_,q)=>pick(Array.from({length:S.nopt},(_,j)=>fill(...qp(q,j)))));
  // overlay: green = correct, red = wrong, blue ring = correct answer that was missed
