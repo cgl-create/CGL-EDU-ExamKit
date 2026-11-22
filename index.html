@@ -155,9 +155,11 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{overflow-x:hidden
    if(!token){document.body.innerHTML="<main><h2>ExamKit host access key required</h2><p>Restart this page and enter the key shown in the host computer's terminal.</p></main>";return}
    const response=await fetch("/api/state",{headers:{"X-ExamKit-Token":token},cache:"no-store"});
    if(!response.ok){sessionStorage.removeItem("examkit-host-token");alert("Host access key was not accepted. Refresh and try again.");return}
-   const payload=await response.json();
-   for(let i=localStorage.length-1;i>=0;i--){const key=localStorage.key(i);if(key&&/^(os:|examkit:)/.test(key))localStorage.removeItem(key)}
-   for(const [key,value] of Object.entries(payload.storage||{}))localStorage.setItem(key,value);
+   const payload=await response.json(),incoming=payload.storage||{};
+   if(Object.keys(incoming).length){
+    for(let i=localStorage.length-1;i>=0;i--){const key=localStorage.key(i);if(key&&/^(os:|examkit:)/.test(key))localStorage.removeItem(key)}
+    for(const [key,value] of Object.entries(incoming))localStorage.setItem(key,value);
+   }
    sessionStorage.setItem("examkit-host-token",token);
    window.__EXAMKIT_SERVER__={enabled:true,token};
   }
